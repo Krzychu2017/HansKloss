@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 		double touchScreenRight = touchScreenX * 3;
 
 		if (Input.touchCount > 0) {
-			Touch myTouch = Input.GetTouch (0);
+			//Touch myTouch = Input.GetTouch (0);
 
 			Touch[] myTouches = Input.touches;
 			for (int i = 0; i < Input.touchCount; i++) {

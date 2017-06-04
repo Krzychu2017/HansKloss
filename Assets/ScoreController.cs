@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour
 {
-    public TextMesh FoodCount;
-    public TextMesh DrinkCount;
-    public TextMesh SealCount;
-    public TextMesh PictureCount;
-    public TextMesh DocumentCount;
+	public Text FoodCount;
+	public Text DrinkCount;
+	public Text SealCount;
+	public Text PictureCount;
+	public Text DocumentCount;
 
     private int food;
     private int drink;
