@@ -18,9 +18,9 @@ public class ScoreController : MonoBehaviour
     // Use this for initialization
     void Start ()
 	{
-	    food = 100;
-	    drink = 100;
-	}
+	    PlayerPrefs.SetInt("FoodCount", 100);
+	    PlayerPrefs.SetInt("DrinkCount", 100);
+    }
 
     void Awake()
     {
