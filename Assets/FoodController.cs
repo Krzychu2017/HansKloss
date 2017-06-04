@@ -4,29 +4,36 @@ using UnityEngine;
 
 public class FoodController : MonoBehaviour
 {
-
+	bool isTriggered = false;
+	System.DateTime eventStartTime;
     /// <summary>
-    /// Metoda odpowioadająca za start kolizji. Po czasie 2 sec następuje zebranie jedzenia i odnowienie jego pojemniości.
+    /// Metoda odpowioadająca za start kolizji.
     /// </summary>
     /// <param name="other">Obiekt kolizji</param>
-    void OnCollisionEnter2D( Collision2D other )
+	void OnTriggerEnter2D( Collider2D other )
     {
-        
-        Invoke("GetFood", 2.0f);
-    }
-    void OnCollisionStay2D( Collision2D other )
-    {
-    
+		if (!isTriggered) {
+			isTriggered = true;
+			eventStartTime = System.DateTime.Now;
+		}
     }
 
-    void OnCollisionExit2D( Collision2D other )
-    {
+	void OnTriggerExit2D (Collider2D other)
+	{
+		isTriggered = false;
+	}
 
-        Destroy(gameObject);
-    }
+	void Update(){
+		if (isTriggered && ((System.DateTime.Now - eventStartTime).TotalSeconds >= 1)) {
+			GetFood ();
+			isTriggered = false;
+		}
+
+	}
 
     void GetFood()
     {
         PlayerPrefs.SetInt("FoodCount", 100);
+		Destroy(gameObject);
     }
 }

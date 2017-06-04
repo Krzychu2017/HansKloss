@@ -4,24 +4,36 @@ using UnityEngine;
 
 public class DrinkController : MonoBehaviour {
 
-    void OnCollisionEnter2D( Collision2D other )
-    {
-        
-        Invoke("GetFood", 2.0f);
-    }
-    void OnCollisionStay2D( Collision2D other )
-    {
-        
-    }
+	bool isTriggered = false;
+	System.DateTime eventStartTime;
+	/// <summary>
+	/// Metoda odpowioadająca za start kolizji.
+	/// </summary>
+	/// <param name="other">Obiekt kolizji</param>
+	void OnTriggerEnter2D( Collider2D other )
+	{
+		if (!isTriggered) {
+			isTriggered = true;
+			eventStartTime = System.DateTime.Now;
+		}
+	}
 
-    void OnCollisionExit2D( Collision2D other )
-    {
-        
-        Destroy(gameObject);
-    }
+	void OnTriggerExit2D (Collider2D other)
+	{
+		isTriggered = false;
+	}
+
+	void Update(){
+		if (isTriggered && ((System.DateTime.Now - eventStartTime).TotalSeconds >= 1)) {
+			GetDrink ();
+			isTriggered = false;
+		}
+
+	}
 
     void GetDrink()
     {
         PlayerPrefs.SetInt("DrinkCount", 100);
+		Destroy(gameObject);
     }
 }

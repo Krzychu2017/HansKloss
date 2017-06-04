@@ -25,15 +25,15 @@ public class ItemController : MonoBehaviour
     {
         if (other.gameObject.tag == "Document")
         {
-            Invoke("GetDocument", 2.0f);
+			GetDocument ();
         }
         if(other.gameObject.tag == "Picture")
         {
-            Invoke("GetPicture", 2.0f);
+			GetPicture ();
         }
         if (other.gameObject.tag == "Seal")
         {
-            Invoke("GetSeal", 2.0f);
+			GetSeal ();
         }      
     }
     void OnCollisionStay2D( Collision2D other )
