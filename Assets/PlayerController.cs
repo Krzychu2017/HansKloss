@@ -6,11 +6,14 @@ public class PlayerController : MonoBehaviour
 {
 	public Transform cameraObj;
 	public Transform heroObj;
+	public Transform elevatorObj;
 
 	private int speed = 5;
 	private int jumpForce = 7;
 
-	private bool IsGrounded = false;
+	private bool isGrounded = false;
+	private bool inElevator = false;
+	private bool goDown = false;
 
 	private float camHeight;
 	private float camWidth;
@@ -23,16 +26,6 @@ public class PlayerController : MonoBehaviour
 		camWidth = camHeight + cam.aspect;
 
 		camWidth *= 0.9f;
-	}
-
-	bool isGrounded ()
-	{
-		
-		if (GetComponent<Rigidbody2D> ().velocity.y > 0) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	// Update is called once per frame
@@ -49,18 +42,24 @@ public class PlayerController : MonoBehaviour
 		} else if (Input.GetKey ("d")) {
 			GetComponent<Rigidbody2D> ().velocity = new Vector2 (speed, GetComponent<Rigidbody2D> ().velocity.y);
 			heroObj.transform.eulerAngles = new Vector3 (0, 0, 0);
+		} else if (Input.GetKeyDown ("s")) {
+			goDown = true;
 		} else {
 			GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, GetComponent<Rigidbody2D> ().velocity.y);
 		}
-		if (Input.GetKeyDown (KeyCode.Space) && IsGrounded) {				
+		if (Input.GetKeyDown (KeyCode.Space) && isGrounded) {				
 			//skok
 			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, jumpForce), ForceMode2D.Impulse);
 		}
 
 		//sterowanie dotykowe
-		double touchScreenX = Screen.width / 4.0;
+		double touchScreenX = Screen.width / 4.0f;
+		double touchScreenCenterY = Screen.height / 2.0f;
+
 		double touchScreenLeft = touchScreenX;
-		double touchScreenRight = touchScreenX * 3;
+		double touchScreenRight = touchScreenX * 3.0f;
+
+
 
 		if (Input.touchCount > 0) {
 			Touch[] myTouches = Input.touches;
@@ -82,10 +81,20 @@ public class PlayerController : MonoBehaviour
 
 				if (myTouches [i].phase == TouchPhase.Began) {
 				
-					if ( (myTouches [i].position.x > touchScreenLeft) && (myTouches [i].position.x < touchScreenRight) ) {
-						if (IsGrounded) {
-							GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, jumpForce), ForceMode2D.Impulse);
+					if ((myTouches [i].position.x > touchScreenLeft) && (myTouches [i].position.x < touchScreenRight)) {
+						//skok/jazda w górę na górnej części ekranu
+						if (myTouches [i].position.y > touchScreenCenterY) {
+							if (isGrounded && (!inElevator)) {
+								GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, jumpForce), ForceMode2D.Impulse);
+							}
 						}
+
+						//jazda w dół na windzie
+						if (myTouches [i].position.y > touchScreenCenterY) {
+							goDown = true;
+						}
+
+
 					}
 				}
 			}
@@ -116,20 +125,44 @@ public class PlayerController : MonoBehaviour
 
 	}
 
+
+
 	void OnTriggerEnter2D (Collider2D other)
 	{		
-		if (other.transform.tag == "Ground") {
-			IsGrounded = true;
-//			Debug.Log ("Grounded!");
-		}
 
+	}
+
+	void OnTriggerStay2D (Collider2D other)
+	{
+		if (other.transform.tag == "Ground") {
+			if (!isGrounded) {
+				isGrounded = true;
+			}
+		}
+		if (other.transform.tag == "Elevator") {
+			
+			if (goDown) {
+				goDown = false;
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y - 0.6342f); //winda w dół
+				this.transform.localPosition = new Vector3 (this.transform.localPosition.x, this.transform.localPosition.y - 2.561f); //hans w dół
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y + 0.6342f); //reset windy
+				Debug.Log ("Winda");
+			}
+
+
+		}
 	}
 
 	void OnTriggerExit2D (Collider2D other)
 	{
 		if (other.transform.tag == "Ground") {
-			IsGrounded = false;
-//			Debug.Log ("not grounded!");
+			isGrounded = false;
+			//Debug.Log ("not grounded!");
+		}
+
+		if (other.transform.tag == "Elevator") {
+			inElevator = false;
 		}
 	}
+		
 }

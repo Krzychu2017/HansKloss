@@ -25,19 +25,19 @@ public class ItemController : MonoBehaviour
     /// <param name="other">Nazwa obiektu</param>
 	void OnTriggerEnter2D( Collider2D other )
     {
-		if (this.gameObject.name == "Document")
+		if (this.gameObject.tag == "Document")
         {
 			GetDocument ();
         }
-        if(this.gameObject.name == "Picture")
+		if(this.gameObject.tag == "Picture")
         {
 			GetPicture ();
         }
-		if (this.gameObject.name == "Seal")
+		if (this.gameObject.tag == "Seal")
         {
 			GetSeal ();
         }      
-		if (this.gameObject.name == "Key")
+		if (this.gameObject.tag == "Key")
 		{
 			GetKey ();
 		}   
@@ -85,7 +85,7 @@ public class ItemController : MonoBehaviour
 	void GetKey()
 	{
 		key = PlayerPrefs.GetInt ("KeyCount");
-		PlayerPrefs.SetInt("KeyCount", ++seal);
+		PlayerPrefs.SetInt("KeyCount", ++key);
 		Debug.Log ("wzięto klucz");
 		Destroy(gameObject);
 	}
