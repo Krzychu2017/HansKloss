@@ -10,12 +10,14 @@ public class ScoreController : MonoBehaviour
 	public Text SealCount;
 	public Text PictureCount;
 	public Text DocumentCount;
+	public Text KeyCount;
 
     private int food;
     private int drink;
     private int seal;
     private int picture;
     private int document;
+	private int key;
     // Use this for initialization
     void Start ()
 	{
@@ -36,11 +38,13 @@ public class ScoreController : MonoBehaviour
 	    seal = PlayerPrefs.GetInt("SealCount");
 	    picture = PlayerPrefs.GetInt("PictureCount");
 	    document = PlayerPrefs.GetInt("DocumentCount");
+		key = PlayerPrefs.GetInt ("KeyCount");
         FoodCount.text = food.ToString();
 	    DrinkCount.text = drink.ToString();
 	    SealCount.text = seal.ToString();
 	    PictureCount.text = picture.ToString();
 	    DocumentCount.text = document.ToString();
+		KeyCount.text = key.ToString ();
 	}
     /// <summary>
     /// Metoda odpowiedzialna za zmniejszanie poziomu jedzenia

@@ -8,6 +8,7 @@ public class ItemController : MonoBehaviour
     private int seal;
     private int picture;
     private int document;
+	private int key;
 
 
 	// Use this for initialization
@@ -16,38 +17,43 @@ public class ItemController : MonoBehaviour
 	    PlayerPrefs.SetInt("DocumentCount", 0);
         PlayerPrefs.SetInt("PictureCount", 0);
         PlayerPrefs.SetInt("SealCount", 0);
+		PlayerPrefs.SetInt ("KeyCount", 0);
     }
 	/// <summary>
     /// Metoda odpowiedzialna za zbieranie znajdziek z opóźnieniem 2 sec
     /// </summary>
     /// <param name="other">Nazwa obiektu</param>
-    void OnCollisionEnter2D( Collision2D other )
+	void OnTriggerEnter2D( Collider2D other )
     {
-        if (other.gameObject.tag == "Document")
+		if (this.gameObject.name == "Document")
         {
 			GetDocument ();
         }
-        if(other.gameObject.tag == "Picture")
+        if(this.gameObject.name == "Picture")
         {
 			GetPicture ();
         }
-        if (other.gameObject.tag == "Seal")
+		if (this.gameObject.name == "Seal")
         {
 			GetSeal ();
         }      
+		if (this.gameObject.name == "Key")
+		{
+			GetKey ();
+		}   
     }
-    void OnCollisionStay2D( Collision2D other )
-    {
 
-    }
     /// <summary>
     /// Metoda odpowiedzialna po zakończeniu kolizji za zniszczenie obiektu
     /// </summary>
     /// <param name="other">Nazwa kolidera</param>
-    void OnCollisionExit2D( Collision2D other )
-    {
-        Destroy(gameObject);
-    }
+//	void OnTriggerExit2D (Collider2D other)
+//    {
+//        Destroy(gameObject);
+//    }
+	//nie podobało mi się, że klucz był zebrany a cały czas leżał na mapie
+	//teraz zbiera i od razu kasuje
+
     /// <summary>
     /// Metoda dodająca dokument
     /// </summary>
@@ -55,6 +61,7 @@ public class ItemController : MonoBehaviour
     {
         document = PlayerPrefs.GetInt("DocumentCount");
         PlayerPrefs.SetInt("DocumentCount", ++document);
+		Destroy(gameObject);
     }
     /// <summary>
     /// Metoda dodająca rysunek
@@ -63,6 +70,7 @@ public class ItemController : MonoBehaviour
     {
         picture = PlayerPrefs.GetInt("PictureCount");
         PlayerPrefs.SetInt("PictureCount", ++picture);
+		Destroy(gameObject);
     }
     /// <summary>
     /// Metoda dodająca pieczątkę
@@ -71,5 +79,14 @@ public class ItemController : MonoBehaviour
     {
         seal = PlayerPrefs.GetInt("SealCount");
         PlayerPrefs.SetInt("SealCount", ++seal);
+		Destroy(gameObject);
     }
+
+	void GetKey()
+	{
+		key = PlayerPrefs.GetInt ("KeyCount");
+		PlayerPrefs.SetInt("KeyCount", ++seal);
+		Debug.Log ("wzięto klucz");
+		Destroy(gameObject);
+	}
 }
