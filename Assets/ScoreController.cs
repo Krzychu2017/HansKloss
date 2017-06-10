@@ -27,8 +27,8 @@ public class ScoreController : MonoBehaviour
 
     void Awake()
     {
-        InvokeRepeating("FoodUpdate",0.3f,0.3f);
-        InvokeRepeating("DrinkUpdate", 0.3f, 0.3f);
+        InvokeRepeating("FoodUpdate",0.5f,0.5f);
+        InvokeRepeating("DrinkUpdate", 0.45f, 0.45f);
     }
 	// Update is called once per frame
 	void Update ()

@@ -25,8 +25,7 @@ public class DoorController : MonoBehaviour
 	void OnCollisionEnter2D (Collision2D coll)
 	{
 		if (key > 0) {			
-			key--;
-			PlayerPrefs.SetInt("KeyCount", key);
+			PlayerPrefs.SetInt("KeyCount", --key);
 			Destroy (gameObject);
 		}
 	}
