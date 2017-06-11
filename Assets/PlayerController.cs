@@ -12,8 +12,11 @@ public class PlayerController : MonoBehaviour
 	private int jumpForce = 7;
 
 	private bool isGrounded = false;
+
+	//winda
 	private bool inElevator = false;
-	private bool goDown = false;
+	private bool elevatorGoDown = false;
+	private bool elevatorGoUp = false;
 
 	private float camHeight;
 	private float camWidth;
@@ -43,13 +46,19 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Rigidbody2D> ().velocity = new Vector2 (speed, GetComponent<Rigidbody2D> ().velocity.y);
 			heroObj.transform.eulerAngles = new Vector3 (0, 0, 0);
 		} else if (Input.GetKeyDown ("s")) {
-			goDown = true;
+			elevatorGoDown = true;
 		} else {
 			GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, GetComponent<Rigidbody2D> ().velocity.y);
 		}
-		if (Input.GetKeyDown (KeyCode.Space) && isGrounded) {				
-			//skok
-			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, jumpForce), ForceMode2D.Impulse);
+		if (Input.GetKeyDown ("w") && isGrounded) {				
+			if (inElevator) {
+				// jest w windize
+				elevatorGoUp = true;
+			} else {
+				//skok
+				GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, jumpForce), ForceMode2D.Impulse);
+				elevatorGoUp = false;
+			}
 		}
 
 		//sterowanie dotykowe
@@ -91,10 +100,8 @@ public class PlayerController : MonoBehaviour
 
 						//jazda w dół na windzie
 						if (myTouches [i].position.y > touchScreenCenterY) {
-							goDown = true;
+							elevatorGoDown = true;
 						}
-
-
 					}
 				}
 			}
@@ -128,7 +135,8 @@ public class PlayerController : MonoBehaviour
 
 
 	void OnTriggerEnter2D (Collider2D other)
-	{		
+	{				
+
 
 	}
 
@@ -139,18 +147,53 @@ public class PlayerController : MonoBehaviour
 				isGrounded = true;
 			}
 		}
-		if (other.transform.tag == "Elevator") {
+
+		if ((other.transform.tag == "ElevatorTop") ||
+			(other.transform.tag == "ElevatorBottom") || 
+			(other.transform.tag == "ElevatorMiddle")){
+			inElevator = true;
+		}
+
+		if (other.transform.tag == "ElevatorTop") {
 			
-			if (goDown) {
-				goDown = false;
+			if (elevatorGoDown) {
+				elevatorGoDown = false;
 				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y - 0.6342f); //winda w dół
 				this.transform.localPosition = new Vector3 (this.transform.localPosition.x, this.transform.localPosition.y - 2.561f); //hans w dół
 				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y + 0.6342f); //reset windy
-				Debug.Log ("Winda");
+				Debug.Log ("ElevatorTop w dół");
+			}
+		}
+
+		if (other.transform.tag == "ElevatorBottom") {
+			if (elevatorGoUp) {
+				elevatorGoUp = false;
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y + 0.6342f); //winda w dół
+				this.transform.localPosition = new Vector3 (this.transform.localPosition.x, this.transform.localPosition.y + 2.561f); //hans w dół
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y - 0.6342f); //reset windy
+				Debug.Log ("ElevatorBottom w górę");
+
+			}
+		}
+
+		if (other.transform.tag == "ElevatorMiddle") {
+			if (elevatorGoUp) {
+				elevatorGoUp = false;
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y + 0.6342f); //winda w dół
+				this.transform.localPosition = new Vector3 (this.transform.localPosition.x, this.transform.localPosition.y + 2.561f); //hans w dół
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y - 0.6342f); //reset windy
+				Debug.Log ("ElevatorMiddle w górę");
 			}
 
-
+			if (elevatorGoDown) {
+				elevatorGoDown = false;
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y - 0.6342f); //winda w dół
+				this.transform.localPosition = new Vector3 (this.transform.localPosition.x, this.transform.localPosition.y - 2.561f); //hans w dół
+				other.transform.localPosition = new Vector3 (other.transform.localPosition.x, other.transform.localPosition.y + 0.6342f); //reset windy
+				Debug.Log ("ElevatorMiddle w dół");
+			}
 		}
+
 	}
 
 	void OnTriggerExit2D (Collider2D other)
@@ -160,7 +203,9 @@ public class PlayerController : MonoBehaviour
 			//Debug.Log ("not grounded!");
 		}
 
-		if (other.transform.tag == "Elevator") {
+		if ((other.transform.tag == "ElevatorTop") ||
+			(other.transform.tag == "ElevatorBottom") || 
+			(other.transform.tag == "ElevatorMiddle")){
 			inElevator = false;
 		}
 	}
