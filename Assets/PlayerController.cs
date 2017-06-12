@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 		camHeight = cam.orthographicSize * 3.37f;
 		camWidth = camHeight + cam.aspect;
 
-		camWidth *= 0.9f;
+		camWidth *= 0.8f;
 	    anim = GetComponent<Animator>();
 	}
 
@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
 		Vector3 camPos = Camera.main.WorldToViewportPoint (transform.position);
 		Vector3 camPosToInne = cameraObj.transform.position;
 		Vector3 camOffset;
+
+
+
 
 		//sterowanie klawiaturą
 		if (Input.GetKey ("a")) {
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour
 		} else if (Input.GetKeyDown ("s")) {
 			elevatorGoDown = true;
 		} else {
+			elevatorGoDown = false;
 			GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, GetComponent<Rigidbody2D> ().velocity.y);
 		}
 		if (Input.GetKeyDown ("w") && isGrounded) {				
@@ -108,7 +112,8 @@ public class PlayerController : MonoBehaviour
 			            }
 
 			            //jazda w dół na windzie
-			            if (myTouches[i].position.y > touchScreenCenterY) {
+			            if (myTouches[i].position.y < touchScreenCenterY) {
+							elevatorGoUp = false;
 			                elevatorGoDown = true;
 			            }
 			        }
