@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
 
 	private bool isGrounded = false;
 
+    private Animator anim;
+
 	//winda
 	private bool inElevator = false;
 	private bool elevatorGoDown = false;
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
 		camWidth = camHeight + cam.aspect;
 
 		camWidth *= 0.9f;
+	    anim = GetComponent<Animator>();
 	}
 
 	// Update is called once per frame
@@ -88,23 +91,29 @@ public class PlayerController : MonoBehaviour
 					}
 				}
 
-				if (myTouches [i].phase == TouchPhase.Began) {
-				
-					if ((myTouches [i].position.x > touchScreenLeft) && (myTouches [i].position.x < touchScreenRight)) {
-						//skok/jazda w górę na górnej części ekranu
-						if (myTouches [i].position.y > touchScreenCenterY) {
-							if (isGrounded && (!inElevator)) {
-								GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, jumpForce), ForceMode2D.Impulse);
-							}
-						}
+			    if (myTouches[i].phase == TouchPhase.Began) {
 
-						//jazda w dół na windzie
-						if (myTouches [i].position.y > touchScreenCenterY) {
-							elevatorGoDown = true;
-						}
-					}
-				}
-			}
+			        if ((myTouches[i].position.x > touchScreenLeft) && (myTouches[i].position.x < touchScreenRight)) {
+			            //skok/jazda w górę na górnej części ekranu
+			            if ((myTouches[i].position.y > touchScreenCenterY) && isGrounded) {
+			                if (inElevator) {
+			                    // jest w windize
+			                    elevatorGoUp = true;
+			                }
+			                else {
+			                    //skok
+			                    GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+			                    elevatorGoUp = false;
+			                }
+			            }
+
+			            //jazda w dół na windzie
+			            if (myTouches[i].position.y > touchScreenCenterY) {
+			                elevatorGoDown = true;
+			            }
+			        }
+			    }
+            }
 
 		}
 
@@ -129,7 +138,7 @@ public class PlayerController : MonoBehaviour
 			camOffset = new Vector3 (0, camHeight / 2);
 			cameraObj.transform.position = camPosToInne + camOffset;
 		}
-
+        anim.SetFloat("Speed",Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x));
 	}
 
 
@@ -145,6 +154,7 @@ public class PlayerController : MonoBehaviour
 		if (other.transform.tag == "Ground") {
 			if (!isGrounded) {
 				isGrounded = true;
+			    anim.SetBool("Grounded", true);
 			}
 		}
 
