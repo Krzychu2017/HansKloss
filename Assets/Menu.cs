@@ -1,55 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Menu : MonoBehaviour
+namespace Assets
 {
-
-    public Canvas exitCanvas;
-
-    public Button btnStart;
-
-    public Button btnExit;
-
-    private Canvas menuUI;
-	// Use this for initialization
-	void Start ()
-	{
-	    menuUI = (Canvas) GetComponent<Canvas>();
-        exitCanvas = (Canvas)GetComponent<Canvas>();
-        exitCanvas.enabled = false;
-	    menuUI.enabled = true;
-	    Cursor.visible = menuUI.enabled;
-        Cursor.lockState = CursorLockMode.Confined;
-
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public void Wyjscie()
+    public class Menu : MonoBehaviour
     {
-        exitCanvas.enabled = true;
-        btnExit.enabled = false;
-        btnStart.enabled = false;
-    }
-    public void NieWyjscie()
-    {
-        exitCanvas.enabled = false;
-        btnExit.enabled = true;
-        btnStart.enabled = true;
-    }
+        public void LoadLevel()
+        {
+            SceneManager.LoadScene("mainGame");
+        }
 
-    public void StartButton()
-    {
-        menuUI.enabled = false;
-    }
-    public void TakWyjscie()
-    {
-        Application.Quit();
+        public void Exit()
+        {
+            Application.Quit();
+        }
     }
 }
