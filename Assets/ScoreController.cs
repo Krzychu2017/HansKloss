@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour
@@ -45,7 +46,15 @@ public class ScoreController : MonoBehaviour
 	    PictureCount.text = picture.ToString();
 	    DocumentCount.text = document.ToString();
 		KeyCount.text = key.ToString ();
-	}
+	    if (food <= 0)
+	    {
+	        SceneManager.LoadScene(2);
+        }
+	    if (drink <= 0)
+	    {
+	        SceneManager.LoadScene(2);
+	    }
+    }
     /// <summary>
     /// Metoda odpowiedzialna za zmniejszanie poziomu jedzenia
     /// </summary>
