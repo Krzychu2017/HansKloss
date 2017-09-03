@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 	public Transform elevatorObj;
 
 	private int speed = 5;
-	private int jumpForce = 7;
+	private float jumpForce = 7.5f;
 
 	private bool isGrounded = false;
 
