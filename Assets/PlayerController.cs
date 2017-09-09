@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 		camHeight = cam.orthographicSize * 3.37f;
 		camWidth = camHeight + cam.aspect;
 
-		camWidth *= 0.8f;
+		camWidth *= 0.7f;
 	    anim = GetComponent<Animator>();
 	}
 
@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
 			camOffset = new Vector3 (camWidth, 0);
 			cameraObj.transform.position = camPosToInne + camOffset;
 		}
-		if (camPos.y < 0.0) {
+		if (camPos.y < 0.1) {
 //			Debug.Log ("I am below the camera's view.");
 			camOffset = new Vector3 (0, -camHeight / 2);
 			cameraObj.transform.position = camPosToInne + camOffset;
