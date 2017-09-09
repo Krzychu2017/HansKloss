@@ -27,6 +27,7 @@ public class ItemController : MonoBehaviour
     {
 		if (this.gameObject.tag == "Document")
         {
+			Debug.Log ("zebrano dokument");
 			GetDocument ();
         }
 		if(this.gameObject.tag == "Picture")
