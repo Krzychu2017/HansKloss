@@ -41,7 +41,9 @@ public class ItemController : MonoBehaviour
 		if (this.gameObject.tag == "Key")
 		{
 			GetKey ();
-		}   
+		}  
+
+		//jeżeli będą wszystkie to przejście do sceny końca gry
     }
 
     /// <summary>
