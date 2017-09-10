@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ItemController : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class ItemController : MonoBehaviour
 		}  
 
 		//jeżeli będą wszystkie to przejście do sceny końca gry
+		CheckWin();
     }
 
     /// <summary>
@@ -91,5 +93,12 @@ public class ItemController : MonoBehaviour
 		PlayerPrefs.SetInt("KeyCount", ++key);
 		Debug.Log ("wzięto klucz");
 		Destroy(gameObject);
+	}
+
+	void CheckWin()
+	{
+		if(seal == 1 && document == 12 && picture == 9){
+			SceneManager.LoadScene ("WinScene");
+		}
 	}
 }
